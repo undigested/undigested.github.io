@@ -80,18 +80,29 @@
 
                 text-align: left;
                 text-wrap: balance;
-                max-width: 10em;
+                max-width: min(10em, 50vw);
+
+                animation: title-fadein 6s forwards ease-out;
+                scale: 0.2;
             }
 
             a {
                 color: inherit;
             }
 
-            h1 #title {
-                text-align: left;
-            }
+            @keyframes title-fadein {
+                0% {
+                    opacity: -0.5;
+                    scale: 0.4;
+                    translate: 0 50%;
+                }
 
-           
+                100% {
+                    opacity: 1;
+                    scale: 1;
+                    translate: 0 0;
+                }
+            }
         </style>
     </head>
     <body>
@@ -119,14 +130,11 @@
             const divisor = k / Math.log(2 + string.length);
             window.onload = () => {
                 const title = document.getElementById("title");
-                let it = 0;
+                let it = -k / 2;
                 const f = () => {
                     const t = 2 + string.length - Math.exp((k - it++) / divisor);
-                    console.log(it, t);
                     const s = (t) => Math.floor(Math.exp(1.5 * (1 - t)));
                     const a = (j, i) => alphabets[j][i % alphabet.length];
-                    const fmt = (i, j, s) => alphabets[j][i] === " " ? " " : s;
-                    <!-- console.log(indices.map((i, j) => s(int - j))); -->
                     title.innerHTML = indices.map((i, j) => typeof i == "string" ? i : a(j, i + s(t - j))).join("");
                     if (it < k) setTimeout(f, interval);
                 }
